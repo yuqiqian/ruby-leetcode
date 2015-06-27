@@ -1,41 +1,24 @@
-def my_atoi(str)
-    max = 2147483647
-    min = -2147483648
-    i = 0
-    result = 0
-    symbol = 1
-
-    if str.length == 0
-        return 0
+def spiral_order(matrix)
+    row = matrix.length
+    if row == 0
+        return matrix
     end
-
-    while str[i] == " " do 
-        i+=1
+    col = matrix[0].length
+    result = []
+    bound = [row,col].min
+    0.upto(bound/2-1) do |layer|
+        result = result + matrix[layer][layer..col-layer-2]
+        layer.upto(row-layer-2){|i|result<< matrix[i][col-layer-1]}
+        result = result + matrix[row-layer-1][layer+1..col-layer-1].reverse
+        (row-layer-1).downto(layer+1){|i| result << matrix[i][layer]}
     end
-
-    if str[i] == "-" 
-        symbol = -1
-         i += 1
-    elsif str[i] == "+"
-        symbol = 1
-         i += 1
-    elsif "0".ord > str[i].ord || str[i].ord > "9".ord
-        return 0
+    
+    if bound%2 == 1
+        if bound == row
+            result = result + matrix[bound/2][bound/2..col-bound/2-1]
+        else
+            (bound/2).upto(row-bound/2-1){|i| result<< matrix[i][bound/2]}
+        end
     end
-   
-    #binding.pry
-    while str[i]!=nil && "0".ord <= str[i].ord && str[i].ord <= "9".ord do
-        result = result*10 + str[i].ord - "0".ord
-        i += 1
-        #binding.pry
-    end
-    result = result*symbol
-    if  result < min
-        return min
-    elsif result > max
-        return max
-    else
-        return result
-    end
-        
+    result
 end
