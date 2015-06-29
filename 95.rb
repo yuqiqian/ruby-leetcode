@@ -2,12 +2,14 @@ def convert_array_trees(array)
 	result = 0.upto(array.length-1){|i|TreeNode.new(i+1)}
 	root = nil
 	0.upto(array.length-1) do |i|
+		binding.pry
 		if array[i] == -1
 			root = result[i]
 		else
 			if array[i] > i
 				result[array[i]].left = result[i]
 			else
+				binding.pry
 				result[array[i]].right = result[i]
 			end
 		end

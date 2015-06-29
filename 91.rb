@@ -17,7 +17,7 @@ def num_decodings(s)
 
 		if s[i] == "1" || (s[i]=="2" && ("0123456".include? s[i+1]))
 			ending[i+2] += ending[i]
-			if s[i] == "0"
+			if s[i+1] == "0"
 				i+=1
 			end
 		end
