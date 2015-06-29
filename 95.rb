@@ -1,6 +1,16 @@
+class TreeNode
+    attr_accessor :val, :left, :right
+    def initialize(val)
+        @val = val
+        @left, @right = nil, nil
+    end
+end
+
 def convert_array_trees(array)
-	result = 0.upto(array.length-1){|i|TreeNode.new(i+1)}
+	result = []
+	0.upto(array.length-1){|i|result << TreeNode.new(i+1)}
 	root = nil
+	binding.pry
 	0.upto(array.length-1) do |i|
 		binding.pry
 		if array[i] == -1
