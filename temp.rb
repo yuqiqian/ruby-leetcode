@@ -1,17 +1,24 @@
-def read(buf, n)
-    empty = [""]*4
-    read = 0
-    eof = false
-    while !eof && read < n
-        this_read = read4(buf)
-        if this_read < 4
-            eof = true
+def first_missing_positive(nums)
+    i = 0
+    while i < nums.length
+        if i+1 == nums[i]
+            i+=1
+        elsif nums[i] > nums.length
+            i+=1
+        elsif nums[i] <= 0
+            i+=1
+        elsif nums[i] == nums[nums[i]-1]
+            i+=1
+        else
+            x, y = i, nums[i]-1
+            nums[x], nums[y] = nums[y], nums[x]
         end
-        byte = [m-read, this_read].min
-        (0..byte-1).each do |i|
-            buf[read + i] = empty[i]
-        end
-        read += i
     end
-    read
+    (0..nums.length-1).each do |index|
+        binding.pry
+        if index+1 != nums[i]
+            return index+1
+        end
+    end
+    return nums.length+1
 end
