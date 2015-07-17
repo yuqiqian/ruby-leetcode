@@ -1,40 +1,23 @@
 # @param {String} s
 # @return {Integer}
 def longest_valid_parentheses(s)
-	stack = []
-	(0..s.length-1).each do |i|
-		s[i] = "" if s[i] == ")"
-		break if s[i] == "("
-	end
-
-	s.each_char do |item|
-		if item == "("
-			stack << item
-		else
-			if stack[-1] == "("
-				stack.pop
-				stack << 2
-			elsif stack.length > 1 && stack[-2] == "("
-				temp = stack.pop
-				stack.pop
-				stack << temp + 2
-			else
-				stack << ")"
-                next
+    stack = [] 
+    max_len = 0
+    curr_len = 0
+    left = -1
+    (0..s.length-1).each do |i|
+        if s[i] == "("
+            stack << i
+        else
+            left = i if stack.length == 0
+            stack.pop
+            if stack.length == 0
+                curr_len = i-left
+            else
+                curr_len = i-stack[-1]
             end
-
-            while stack.length > 1 && stack[-2].is_a?(Integer)
-            	temp = stack.pop
-            	temp += stack.pop
-            	stack << temp
-            end
+            max_len = [max_len, curr_len].max
         end
     end
-
-    stack = stack.map { |item| item if item.is_a?(Integer) }.compact
-    if stack.length == 0
-    	return 0
-    else
-    	return stack.max
-    end
+    max_len
 end
