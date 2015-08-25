@@ -1,5 +1,4 @@
 class MinStack
-    attr_accessor :data, :min_data
     # Initialize your data structure here
     def initialize
         @data = []
@@ -10,40 +9,28 @@ class MinStack
     # @return {Void} nothing
     def push(x)
         @data << x
-        if @min_data.length == 0 || x <= @min_data[-1]
+        if @min_data.empty?
             @min_data << x
+        else
+            @min_data << [@min_data[-1], x].min
         end
         return
     end
 
     # @return {Void} nothing
     def pop
-        if @data.length == 0
-            return
-        else
-            if @data[-1] == @min_data[-1]
-                @min_data.pop
-            end
-            @data.pop
-            return 
-        end
+        res = @data.pop
+        @min_data.pop
+        return        
     end
 
     # @return {Integer}
     def top
-        if @data.length == 0
-            return nil
-        else
-            return @data[-1]
-        end
+        @data[-1]
     end
 
     # @return {Integer}
     def get_min
-        if @min_data.length == 0
-            return nil
-        else
-            return @min_data[-1]
-        end
+        @min_data[-1]
     end
 end

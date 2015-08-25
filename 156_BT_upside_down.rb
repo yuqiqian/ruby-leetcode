@@ -1,13 +1,29 @@
+# Definition for a binary tree node.
+# class TreeNode
+#     attr_accessor :val, :left, :right
+#     def initialize(val)
+#         @val = val
+#         @left, @right = nil, nil
+#     end
+# end
+
+# @param {TreeNode} root
+# @return {TreeNode}
 def upside_down_binary_tree(root)
-	p = root
-	parent = parent_right = nil
-	while p!= nil
-		left = p.left
-		p.left = parent_right
-		parent_right = p.right 
-		p.right = parent
-		parent = p
-		p = left
-	end
-	parent
+    return nil if root.nil?
+    curr = root
+    parent = nil
+    prev_right = nil
+    while !curr.nil?
+        left = curr.left
+        right = curr.right
+
+        curr.left = prev_right
+        curr.right = parent
+
+        prev_right = right
+        parent = curr
+        curr = left
+    end
+    parent
 end
