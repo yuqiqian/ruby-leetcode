@@ -59,3 +59,34 @@ def build_sig(content)
 	end
 	return sig, bucket
 end
+
+
+# @param {String} begin_word
+# @param {String} end_word
+# @param {Set<String>} word_dict
+# @return {Integer}
+def ladder_length(begin_word, end_word, word_dict)
+    dis = {}
+    q = []
+    dis[begin_word] = 1
+    q << begin_word
+    #binding.pry
+    while q.length != 0
+        word = q.shift
+        break if word == end_word
+        #binding.pry
+        (0..word.length-1).each do |i|
+            (0..25).each do |j|
+                new_word = word * 1
+                new_word[i] = ("a".ord+j).chr
+                if ((word_dict.include? new_word) || (new_word == end_word)) && (!dis.has_key? new_word)
+                    dis[new_word] = dis[word] + 1
+                    q << new_word
+                    #binding.pry
+                end
+            end
+        end
+    end
+    return 0 if !dis.has_key? end_word
+    return dis[end_word]
+end

@@ -1,6 +1,45 @@
 # @param {String} s
 # @return {Integer}
 def calculate(s)
+    stack = []
+    res, number, sign = 0,0,1
+    (0..s.length-1).each do |i|
+        c = s[i]
+        if is_number?(c)
+            number = 10 * number + c.to_i
+        elsif c=="+"
+            res += sign * number
+            number = 0
+            sign = 1
+        elsif c=="-"
+            res += sign * number
+            number = 0
+            sign = -1
+        elsif c=="("
+            stack << res
+            stack << sign
+            sign = 1
+            res = 0
+        elsif c == ")"
+            res += sign * number
+            number = 0
+            res *= stack.pop
+            res += stack.pop
+        end
+    end
+    res += sign*number if number!=0
+    res
+end
+
+def is_number?(str)
+    true if Float(str) rescue false
+end
+
+
+
+# @param {String} s
+# @return {Integer}
+def calculate(s)
 	tokens = to_rpn(s)
 	return eval_rpn(tokens)
 end

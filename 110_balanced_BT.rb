@@ -1,25 +1,13 @@
 def is_balanced(root)
-	return helper(root)[0]
+	return dfs_height(root) != -1
 end
-def helper(current)
-	if current == nil
-		return [true, 0]
-	else
-		left = helper(current.left)
-		if left[0] == false
-			return [false, -1]
-		end
+def dfs_height(root)
+	return 0 if root.nil?
+	left = dfs_height(root.left)
+	return -1 if left==-1
+	right = dfs_height(root.right)
+	return -1 if right == -1
 
-		right = helper(current.right)
-		if right[0]==false
-			return [false, -1]
-		end
-
-		if (left[1]-right[1]).abs <= 1
-			height = [left[1], right[1]].max + 1
-			return [true, height]
-		else
-			return [false, -1]
-		end
-	end
+	return -1 if (left-right).abs > 1
+	return 1+[left,right].max
 end

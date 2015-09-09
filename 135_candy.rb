@@ -18,3 +18,25 @@ def candy(ratings)
 	end
 	candy_count.inject(0, :+)
 end
+
+# @param {Integer[]} ratings
+# @return {Integer}
+def candy(ratings)
+    len = ratings.length
+    return 0 if len == 0
+    return 1 if len == 1
+    candy = Array.new(len,1)
+    (1..len-1).each do |i|
+        if ratings[i] > ratings[i-1]
+            candy[i] = candy[i-1] + 1
+        else
+            candy[i] = 1
+        end
+    end
+    (len-2).downto(0) do |i|
+        if ratings[i] > ratings[i+1]
+            candy[i] = [candy[i+1]+1, candy[i]].max
+        end
+    end
+    candy.inject(:+)             
+end

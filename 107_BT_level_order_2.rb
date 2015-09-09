@@ -10,25 +10,18 @@
 # @param {TreeNode} root
 # @return {Integer[][]}
 def level_order_bottom(root)
-	if root == nil
-		return []
-	end
-
-	result = []
-	next_layer = [root]
-
-	while next_layer.length != 0
-		result << next_layer
-		next_layer = []
-		result[-1].each do |father|
-			if father.left != nil
-				next_layer << father.left
-			end
-			if father.right != nil
-				next_layer << father.right
-			end
-		end
-	end
-	result = result.map{|layer| layer.map{|node| node.val }}
-	result.reverse
+    que = [root]
+    wraplist = []
+    return wraplist if root.nil?
+    while que.length!=0
+        level_num = que.length
+        sublist = []
+        level_num.times do
+            que << que[0].left if !que[0].left.nil?
+            que << que[0].right if !que[0].right.nil?
+            sublist << que.shift.val
+        end
+        wraplist.unshift sublist
+    end
+    wraplist
 end

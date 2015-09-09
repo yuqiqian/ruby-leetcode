@@ -48,3 +48,23 @@ def divide(dividend, divisor)
 		return -result-1
 	end
 end
+
+
+def divide(org_n,org_d)
+	ans = 0
+	n = org_n.abs
+	d = org_d.abs
+	while n>= d
+		a = d
+		m = 1
+		while (a<<1) < n
+			a <<= 1
+			m <<= 1
+		end
+		ans += m
+		n -= a
+	end
+	return -ans if (org_n<0 && org_d > 0) || (org_n>0 && org_d < 0)
+	int_max = 2**31-1
+	return ans > int_max ? int_max : ans
+end

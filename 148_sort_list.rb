@@ -1,62 +1,34 @@
 def sort_list(head)
-	return nil if head.nil?
-
-	merge_size = 1
-	finish_sort = false
-
-	pseudo_head = ListNode.new(-1)
-	pseudo_head.next = head
-	while !finish_sort
-		end_of_sorted = pseudo_head
-		while !end_of_sorted.next.nil?
-			first_to_sort = end_of_sorted.next
-			seconde_to_sort = first_to_sort
-			(0..merge_size-1).each do
-				seconde_to_sort = seconde_to_sort.next
-				if seconde_to_sort.nil?
-					break
-				end
-			end
-			if seconde_to_sort.nil?
-				if first_to_sort == pseudo_head.next
-					finish_sort = true
-				end
-				break
-			end
-
-			first_list_count, second_list_count = 0, 0
-			while first_list_count < merge_size && second_list_count < merge_size && !seconde_to_sort.nil?
-				if first_to_sort.val <= seconde_to_sort.val
-					end_of_sorted.next = first_to_sort
-					end_of_sorted = end_of_sorted.next
-					first_to_sort = first_to_sort.next
-					first_list_count += 1
-				else
-					end_of_sorted.next = seconde_to_sort
-					end_of_sorted = end_of_sorted.next
-					seconde_to_sort = seconde_to_sort.next
-					second_list_count += 1
-				end
-			end
-
-			if first_list_count == merge_size
-				while second_list_count < merge_size && !seconde_to_sort.nil?
-					end_of_sorted.next = seconde_to_sort
-					end_of_sorted = end_of_sorted.next
-					seconde_to_sort =  seconde_to_sort.next
-					second_list_count += 1
-				end
-			else
-				while first_list_count < merge_size
-					end_of_sorted.next = first_to_sort
-					end_of_sorted = end_of_sorted.next
-					first_to_sort = first_to_sort.next
-					first_list_count +=1
-				end
-				end_of_sorted.next = seconde_to_sort
-			end
-		end
-		merge_size = merge_size << 1
+	return head if head.nil? || head.next.nil?
+	f = head.next.next
+	p = head
+	while !f.nil? && !f.next.nil?
+		p = p.next
+		f = f.next.next
 	end
-	pseudo_head.next
+	h2 = sort_list(p.next)
+	p.next = nil
+	merge(sort_list(head), h2)
+end
+
+def merge(h1, h2)
+	hn = ListNode.new(0-2**31)
+	c = hn
+	while !h1.nil? && !h2.nil?
+		if h1.val < h2.val
+			c.next = h1
+			h1 = h1.next
+		else
+			c.next = h2
+			h2 = h2.next
+		end
+		c = c.next
+	end
+	if !h1.nil?
+		c.next = h1
+	end
+	if !h2.nil?
+		c.next = h2
+	end
+	hn.next
 end

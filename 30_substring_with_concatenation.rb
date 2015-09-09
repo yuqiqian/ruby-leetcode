@@ -67,3 +67,46 @@ def find_substring(s, words)
 	end
 	result
 end
+
+# @param {String} s
+# @param {String[]} words
+# @return {Integer[]}
+def find_substring(s, words)
+	ans = []
+	n, cnt = s.size, words.size
+	return ans if n <= 0 || cnt <= 0
+	dict = Hash.new(0)
+	words.each{|w| dict[w]+=1}
+	wl = words[0].length
+	(0..wl-1).each do |i|
+		left, count = i, 0
+		tdict = Hash.new(0)
+		(i..n-wl).step(wl).each do |j|
+			str = s[j..j+wl-1]
+			if dict.has_key?(str)
+				tdict[str] += 1
+				if tdict[str] <= dict[str]
+					count += 1
+				else
+					while tdict[str] > dict[str]
+						str1 = s[left..left+wl-1]
+						tdict[str1] -= 1
+						count -= 1 if tdict[str1] < dict[str1]
+						left += wl
+					end
+				end
+				if count == cnt
+					ans << left
+					tdict[s[left..left+wl-1]] -= 1
+					count -= 1
+					left += wl
+				end
+			else
+				tdict.clear
+				count = 0
+				left = j + wl
+			end
+		end
+	end
+	ans
+end

@@ -71,3 +71,50 @@ def generate_trees(n)
 	[result.each{|array|convert_array_trees(array)}]
 end
 
+
+# Definition for a binary tree node.
+# class TreeNode
+#     attr_accessor :val, :left, :right
+#     def initialize(val)
+#         @val = val
+#         @left, @right = nil, nil
+#     end
+# end
+
+# @param {Integer} n
+# @return {TreeNode[]}
+def generate_trees(n)
+	return helper(1,n)
+end
+
+def helper(head, tail)
+	list = []
+	if head > tail
+		list << nil
+		return list
+	end
+	if head == tail
+		list << TreeNode.new(start)
+		return list
+	end
+	left, right = [], []
+	(head..tail).each do |i|
+		left = helper(head, i-1)
+		right = helper(i+1, tail)
+
+		left.each do |lnode|
+			right.each do |rnode|
+				root = TreeNode.new(i)
+				root.left = lnode
+				root.right = rnode
+				list << root
+			end
+		end
+	end
+	list
+end
+
+
+
+
+

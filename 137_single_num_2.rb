@@ -1,4 +1,4 @@
-def single_number(nums)
+ def single_number(nums)
 	bits_in_int = 32
 	bits_res = [0] * bits_in_int
 	num_neg = 0

@@ -15,3 +15,23 @@ def largest_rectangle_area(height)
 	end
 	max_area
 end
+
+# @param {Integer[]} height
+# @return {Integer}
+def largest_rectangle_area(height)
+	ret = 0
+	height << 0
+	index = []
+	(0..height.length-1).each do |i|
+		while index.size > 0 && height[index[-1]] >= height[i]
+			h = height[index[-1]]
+			index.pop
+			sidx = index.length > 0 ? index[-1] : -1
+			if h*(i-sidx-1) > ret
+				ret = h * (i-sidx-1)
+			end
+		end
+		index << i
+	end
+end
+end

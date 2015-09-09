@@ -1,29 +1,30 @@
-def build_tree(inorder, postorder)
-	inpos = {}
-	postpos = {}
-	0.upto(inorder.length-1) do |i|
-		inpos[inorder[i]] =i
-		postpos[postorder[i]] = i
-	end
+# Definition for a binary tree node.
+# class TreeNode
+#     attr_accessor :val, :left, :right
+#     def initialize(val)
+#         @val = val
+#         @left, @right = nil, nil
+#     end
+# end
 
-	return helper(inorder, [0,inorder.length-1], inpos, postorder, [0,postorder.length-1], postpos)
+# @param {Integer[]} inorder
+# @param {Integer[]} postorder
+# @return {TreeNode}
+def build_tree(inorder, postorder)
+    return create(inorder,postorder,0,inorder.length-1,0,postorder.length-1)
 end
 
-def helper(inorder, inorder_zone, inpos, postorder, postorder_zone, postpos)
-	if inorder_zone[1] < inorder_zone[0]
-		return nil
-	end
-
-	root = TreeNode.new(postorder[postorder_zone[1]])
-
-	left_inorder_zone = [inorder_zone[0], inpos[root.val]-1]
-	left_count = inpos[root.val] - inorder_zone[0]
-	left_postorder_zone = [postorder_zone[0], postorder_zone[0]+left_count-1]
-	root.left = helper(inorder, left_inorder_zone, inpos, postorder, left_postorder_zone,postpos)
-
-	right_inorder_zone = [inpos[root.val]+1, inorder_zone[1]]
-	right_count = inorder_zone[1]-inpos[root.val]
-	right_postorder_zone = [postorder_zone[1]-right_count, postorder_zone[1]-1]
-	root.right = helper(inorder, right_inorder_zone, inpos, postorder, right_postorder_zone, postpos)
-	return root
+def create(inorder,postorder,is,ie,ps,pe)
+    return nil if ps>pe
+    node = TreeNode.new(postorder[pe])
+    pos =0
+    (is..ie).each do |i|
+        if inorder[i] == node.val
+            pos = i
+            break
+        end
+    end
+    node.left = create(inorder,postorder,is,pos-1,ps,ps+pos-is-1)
+    node.right = create(inorder,postorder,pos+1,ie,pe-ie+pos,pe-1)
+    return node
 end

@@ -67,5 +67,6 @@ def solve(board)
 			end
 		end
 	end
+	binding.pry
 	return		
 end
