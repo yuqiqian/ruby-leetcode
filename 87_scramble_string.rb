@@ -1,4 +1,4 @@
-def is_scramble(s1, s2)
+ def is_scramble(s1, s2)
 	return false if s1.nil? || s2.nil? || s1.length != s2.length
 	return true if s1 == s2
 	len = s1.length

@@ -23,3 +23,28 @@ def subsets_with_dup(nums)
 end
 
 
+# @param {Integer[]} nums
+# @return {Integer[][]}
+def subsets_with_dup(nums)
+	totalset = [[]]
+	nums.sort!
+	i = 0
+	while i < nums.length
+		count = 0
+		while count + i < nums.length && nums[count+i] == nums[i]
+			count += 1
+		end
+		prev_num = totalset.length * 1
+		(0..prev_num-1).each do |k|
+			instance = totalset[k]
+			(0..count-1).each do |j|
+				instance << nums[i]
+				totalset << instance * 1
+			end
+		end
+		i += count
+	end
+	totalset
+end
+
+end

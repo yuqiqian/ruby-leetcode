@@ -68,3 +68,41 @@ def min_window(s, t)
 	end
 	s[min_window[0]..min_window[1]]
 end
+
+
+# @param {String} s
+# @param {String} t
+# @return {String}
+def min_window(s, t)
+	return "" if s.empty? || t.empty?
+	count = t.size
+	req = Hash.new(0)
+	char_set = Hash.new(false)
+	(0..count-1).each do |i|
+		req[t[i]] += 1
+		char_set[t[i]] = true
+	end
+	i,j,min_len, min_idx = -1, 0, 2**31-1, 0
+	while i < s.length && j < s.length
+		if !count.zero?
+			i += 1
+			req[s[i]] -= 1
+			if char_set[s[i]] && req[s[i]] >= 0
+				count -= 1
+			end
+		else
+			if min_len > i-j+1
+				min_len = i-j+1
+				min_idx = j
+			end
+			req[s[j]] += 1
+			if char_set[s[j]] && req[s[j]] > 0
+				count += 1
+			end
+			j += 1
+		end
+	end
+	return "" if min_len == 2**31-1
+	return s[min_idx, min_idx+min_len-1]
+end
+end

@@ -1,4 +1,4 @@
-def inorder_traversal(root)
+ def inorder_traversal(root)
 	if root == nil
 		return []
 	end

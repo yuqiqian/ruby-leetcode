@@ -17,7 +17,7 @@ def contains_nearby_almost_duplicate(nums, k, t)
             end
         end
         num_dict[key] = val
-        order << key
+        order << key 
         if i >= k
             num_dict.delete(order.pop)
         end

@@ -11,8 +11,10 @@ def min_cut(s)
                 is_palin[i][j] = true
                 cuts = dp[i] + 1
                 dp[j] = cuts if cuts < dp[j]
+                binding.pry
             end
         end
     end
     dp[len]
 end
+
