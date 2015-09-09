@@ -65,4 +65,29 @@ end
 
 				
 			
-			
+# @param {String} s
+# @param {String} p
+# @return {Boolean}
+def is_match(str, pattern)
+	 s, p, match, startIdx = 0, 0, 0, -1
+	 while s < str.length
+	 	if p<pattern.length && (pattern[p] == '?' || str[s] == pattern[p])
+	 		s+=1
+	 		p+=1
+	 	elsif p < pattern.length && pattern[p] == "*"
+	 		startIdx = p 
+	 		match = s
+	 		p+=1
+	 	elsif startIdx != -1
+	 		p = startIdx + 1
+	 		match += 1
+	 		s = match
+	 	else
+	 		return false
+	 	end
+	 end
+	 while p < pattern.length && pattern[p] == "*"
+	 	p += 1
+	 end
+	 return p == pattern.length
+end

@@ -34,3 +34,27 @@ def permute_unique(nums)
 	end
 	result
 end
+
+# @param {Integer[]} nums
+# @return {Integer[][]}
+def permute_unique(nums)
+	 nums.sort!
+	 res = [nums*1]
+	 while true
+	 	i = nums.length-1
+	 	while i > 0
+	 		break if nums[i-1] < nums[i]
+	 		i -= 1
+	 	end
+	 	break if i == 0
+	 	j = nums.length-1
+	 	while j > i-1
+	 		break if nums[j] > nums[i-1]
+	 		j-= 1
+	 	end
+	 	nums[i-1], nums[j] = nums[j], nums[i-1]
+	 	nums[i..-1] = nums[i..-1].reverse
+	 	res << nums * 1
+	 end
+	 res
+end

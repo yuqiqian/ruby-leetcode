@@ -1,35 +1,29 @@
+# @param {String} s
+# @return {String}
 def longest_palindrome(s)
-    if s==nil || s.length == 1 || s.length == 0
-        return s
-    end
-    startIndex=0 
-    len = 0
-    0.upto(s.length-1) do |i|
-        if s[i]==s[i+1]
-            sI = i
-            eI = i+1
-            startIndex, len = search(s,sI,eI,len,startIndex)
+    new_s = "#" + s.split("").join("#")+"#"
+    id, mx = 0, 0
+    p = []
+    (0..new_s.length-1).each do |i|
+        p[i] = mx > i ? [mx-i, p[id*2-i]].min : 1
+        while new_s[i-p[i]] == new_s[i+p[i]]
+            p[i] += 1
         end
-        sI = i
-        eI = i
-        startIndex, len = search(s,sI,eI,len,startIndex)
-    end
-    return s[startIndex..(startIndex+len-1)]
-end
-
-def search(s,sI,eI,len,startIndex)
-    step = 1
-    while (sI-step>=0) && (eI+step)<s.size() do
-        if s[sI-step] != s[eI+step]
-            break
+        if i+p[i] > mx
+            id = i
+            mx = i+p[i]
         end
-        step+=1
     end
-    
-    wid = eI-sI+2*step-1
-    if wid > len
-        len = wid
-        startIndex = sI-step+1
+    max_len = 0
+    center = 0
+    p.each_with_index do |val, i|
+        if max_len < val
+            max_len = val
+            center = i
+        end
     end
-    return startIndex, len
+    binding.pry
+    head = (center-max_len-1)/2+1 >= 0 ? (center-max_len-1)/2+1 : 0
+    tail = head+max_len-2 < s.length-1 ? head+max_len-2 : s.length-1
+    s[head..tail]
 end

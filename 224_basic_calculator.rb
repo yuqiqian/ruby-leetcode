@@ -84,3 +84,41 @@ def get_priority(operator)
 	end
 	return result
 end
+
+
+# @param {String} s
+# @return {Integer}
+def calculate(s)
+	stack = []
+	result, number, sign = 0, 0, 1
+	(0..s.length-1).each do |i|
+		c = s[i]
+		if "0123456789".include?(c)
+			number = 10*number + c.ord-"0".ord
+		elsif c == "+"
+			result += sign * number
+			number = 0
+			sign = 1
+		elsif c =="-"
+			result += sign * number
+			number = 0
+			sign = -1
+		elsif c == "("
+			stack << result
+			stack << sign
+			sign = 1
+			result = 0
+		elsif c == ")"
+			result += sign * number
+			number = 0
+			result *= stack.pop
+			result += stack.pop
+		end
+	end
+	result += sign* number if number!= 0
+	result
+end
+
+				
+				
+				
