@@ -1,28 +1,26 @@
-# @param {String} input
-# @return {Integer[]}
-def diff_ways_to_compute(input)
-    ret = []
-    (0..input.length-1).each do |i|
-        if "+-*".include? input[i]
-            part1, part2 = input[0..i-1], input[i+1..-1]
-            part1_ret = diff_ways_to_compute(part1)
-            part2_ret = diff_ways_to_compute(part2)
-            part1_ret.each do |x|
-                part2_ret.each do |y|
-                    c = 0
-                    case input[i]
-                    when "+"
-                        c = x+y
-                    when "-"
-                        c = x-y
-                    when "*"
-                        c = x*y
-                    end
-                    ret << c    
-                end
-            end
-        end
+
+# @param {String} a
+# @param {String} b
+# @return {String}
+def add_binary(a, b)
+    return b if a.nil? || a.empty?
+    return a if b.nil? || b.empty?
+    a_arr = a.split("")
+    b_arr = b.split("")
+    i, j = a_arr.length-1, b_arr.length-1
+    a_byte, b_byte = 0, 0
+    carry = 0
+    temp = 0
+    result = ""
+    while i > -1 || j > -1 || carry == 1
+        a_byte = (i>-1)? a_arr[i].to_i : 0
+        b_byte = (j > -1)? b_arr[j].to_i : 0
+        temp = a_byte ^ b_byte ^ carry
+        carry = (a_byte+b_byte+carry) >= 2 ? 1 : 0
+        result << temp.to_s
+        binding.pry
+        i -= 1
+        j -= 1
     end
-    ret << input.to_i if ret.size == 0
-    ret
+    result.reverse
 end
