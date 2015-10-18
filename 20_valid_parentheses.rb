@@ -12,4 +12,3 @@ def is_valid(s)
 	end
 	return stack.length == 0
 end
-				

@@ -27,3 +27,30 @@ def permute(nums)
 	end
 	result
 end
+
+# @param {Integer[]} nums
+# @return {Integer[][]}
+def permute(nums)
+	n = nums.length
+	temp = []
+	output = []
+	is_used = Array.new(n, false)
+	helper(0, nums, is_used, temp, output)
+	return output
+end
+
+def helper(i, nums, is_used, temp, output)
+	if i == nums.length
+		output << temp * 1
+		return
+	end
+	(0..nums.length-1).each do |j|
+		if !is_used[j]
+			temp << nums[j]
+			is_used[j] = true
+			helper(j+1, nums, is_used, temp, output)
+			is_used[j] = false
+			temp.pop
+		end
+	end
+end

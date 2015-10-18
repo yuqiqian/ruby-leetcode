@@ -10,26 +10,21 @@ end
 # @param {ListNode} head
 # @return {ListNode}
 def delete_duplicates(head)
-	if head == nil
-		return head
-	end
-
-	temp_head = ListNode.new(head.val^0x1)
-	temp_head.next = head
-
-	current = temp_head
-	while current.next != nil
-		next_val = current.next
-		if next_val.next != nil && next_val.val == next_val.next.val
-			next_val = next_val.next
-			while next_val.next != nil && next_val.val == next_val.next.val
-				next_val = next_val.next
-			end
-			current.next = next_val.next
-		else
-			current = current.next
+	return nil if head.nil?
+	dummy = ListNode.new(0)
+	dummy.next = head
+	pre = dummy
+	cur = head
+	while !cur.nil?
+		while !cur.next.nil? && cur.val == cur.next.val
+			cur = cur.next
 		end
+		if pre.next == cur
+			pre = pre.next
+		else
+			pre.next = cur.next
+		end
+		cur = cur.next
 	end
-
-	return temp_head.next
+	dummy.next
 end
