@@ -1,0 +1,65 @@
+# CSE 6140 HW 2
+## Yuqi Qian
+
+## 1 Scheduling with Weights
+### a) Greedy by smallest time $t_i$ first
+Suppose we have 2 tasks, and sort the tasks by $t_i$, then $Target = \sum\limits_{i=1}^2 w_i C_i = w_1t_1 + w_2(t_1+t_2)$. If we swap these 2 tasks, we have $Target' = w_2t_2+w_1(t_1+t_2)$ . The difference will be $Target-Target' = w_2t_1-w_1t_2$ , where $t_1 < t_2$. However, if $w_2 >> w_1$, then the difference will be positive, indicating that this arrangement is not optimal.
+### b) Greedy by largest weight $w_i$ first
+It is the same case with a). The difference will be $Target-Target' = w_2t_1-w_1t_2$, where $w_1 > w_2$. If $t_2 << t_1$, the difference will be positive, indicating this arrangement is not optimal.
+### c) Greedy by largest $\frac{w_i}{t_i}$
+Suppose the Greedy algorithm sorted the task by $\frac{w_i}{t_i}$ and the final index is like this: $1, 2, \cdots, i, j$. The target function is $Target = \sum\limits_{k=1}^j w_kC_k = w_1t_1 + w_2(t_1+t_2)+\cdots+w_i\sum\limits_{k=1}^i t_k + w_j\sum\limits_{k=1}^j t_k$. If we swap $i$ and $j$ and got $Target' = w_1t_1 + w_2(t_1+t_2) + \cdots + w_j(\sum\limits_{k=1}^{i-1} t_k + t_j) + w_i(\sum\limits_{k=1}^{i-1} t_k + t_j+t_i)$. The difference will be $Target - Target' = w_jt_i - w_it_j$. According to the assumption, $\frac{w_i}{t_i} > \frac{w_j}{t_j}$, thus, $w_it_j > w_jt_i$, the $Target$ will always be the minimum, so the algorithm is optimal.
+
+## 2 Dynamic Programming
+### a) optimal substructures
+For a string of letters $x = x_1x_2\cdots x_k$, define $DP(i)$ to be the maximum sum of $plausibility$ of the segments within $x_1\cdots x_i$. So the optimal structure of this question is:
+$$
+DP(i) = \arg\max_{j \in [0, i-1]} (DP(j) + plausibility(x_{j+1}\cdots x_i))
+$$
+i.e. find a $j$ as the separator of the last "word" s.t. the sum of plausibility of the previous string and the last word is maximum.
+### b) recursive expression for $plausibility$
+$$
+DP(i) = \arg\max_{j \in [0, i-1]} (DP(j) + plausibility(x_{j+1}\cdots x_i))
+$$
+### c) recursive algorithm
+
+### d) iterative algorithm
+
+## 3 Test Subject (TS)
+**Decision version of the problem:** Is there a set of test subjects s.t. any pair of them does not share a language and the count of subject is at most $k$?
+####1) TS  problem is NP
+**Certificate:** a group of candidates $G = (C, L)$, where $C$ is the count of subjects and $L$ is total amount of language spoken by them. 
+**Certifier:** check if $C \le k$ and none of the $L$ is shared by more than one test subject.
+
+####2) Reduction
+We choose Independent Set problem to help us prove TS problem is NP-complete.
+> Proof: $S$ is a TS set of $G$ iff $S$ is an IS of $G$
+$\Rightarrow$ Let $S$ be any TS set of G.
+$\forall$ edge $(u,v)$ indicating the language shared by $u$ and $v$
+Since $S$ is TS set, no one share a language with others,
+$u \not\in S$ or $v \not\in S$
+So S is an IS
+$\Leftarrow$ Let $S$ be IS,
+$\forall u, v \in S$, we have $(u,v)$ does not exist, indicating $u$ and $v$ do not share a language
+So $S$ is a TS set.
+
+Solving $TS(G, k)$ is equal to solving $IS(G,k)$, hence, $IS \le_p TS$, and $TS \le_p IS$. Since IS is NP-complete, so TS is also NP-complete.
+
+## 4 Fiber Connectivity (FC)
+**Decision version:** Does there exist a subset of roads(edges)$T$ s.t. all cities(vertices) are connected and any of the city is connected to no more than $k$ cities (i.e. the maximum degree of each vertex is less than $k$, or $degree(v) \le k$ holds for $\forall v \in V$). 
+#### 1) FC is NP
+**Certificate:** Subsets of roads
+**Certifier: ** Check if every city is connected and $degree(v) \le k$
+#### 2) Reduction
+We choose Hamilton-Cycle(HC) to help us prove FC problem is NP-complete.
+Given $G(V, E)$ as input for HC, generate $G'$ by adding additional $k-2$ vertices connecting to each $v \in V$. Therefore, each $v\in V$ becomes a root of spanning tree of $k-1$ vertices.
+> Proof: HC have solution for $G$ $\Leftrightarrow$ FC have solution for $G'$
+> $\Rightarrow$ If we have $E_0$ as the solution to $G$
+> $\forall v\in V$ has degree 2, i.e. 2 edges connect to it.
+> Since we have $k-2$ vertices, $\forall v \in V$ has $degree(v) = k$.
+> Therefore, $\forall v \in V$ has $degree(v) \le k$
+> $\Leftarrow$ Let $E'_0$ be the solution to $G'$
+> $\forall v\in V, degree(v) = k$, k-2 of the degree is used to connect the additional $k-2$ vertices.
+> If we delete these $k-2$ verteces, these $v\in V$ is connected by a simple path.
+> Connect the head and tail of the simple path, we get a Hamilton Cycle.
+
+Therefore, solving $FC(G',k)$ is equal to solving $HC(G, k)$, hence $FC \le_p HC$ and $HC\le_p FC$. Since $HC$ is NP-complete, so $FC$ is also NP-complete. 
